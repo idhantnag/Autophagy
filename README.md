@@ -2,8 +2,7 @@
 
 Site URL: https://idhantnag.github.io/Autophagy/
 
-A personal literature radar for **Prof. Ravi Manjithaya** (Autophagy Lab, JNCASR Bengaluru),
-built on the same principles as the sibling *NeuroTrends* tracker: a static site that composes
+A  literaure radar: a static site that composes
 real [PubMed E-utilities](https://www.ncbi.nlm.nih.gov/home/develop/api/) queries in the browser,
 so every paper and every summary is **live and never model-invented**.
 
