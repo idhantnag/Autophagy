@@ -1,0 +1,16 @@
+# OS / editor
+.DS_Store
+*.swp
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# local logs
+data/fetch.log
+
+# Office temp lock files
+~$*

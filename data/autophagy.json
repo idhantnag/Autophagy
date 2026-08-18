@@ -1,0 +1,318 @@
+{
+  "meta": {
+    "generated": "2026-08-18T21:35:38+00:00",
+    "source": "PubMed / NCBI E-utilities",
+    "tool": "autophagy-radar",
+    "note": "Config + optional cached trend counts. Every paper and window summary is fetched live from PubMed in the browser, so nothing here is model-generated. Refresh trend cache any time with python3 scripts/fetch_autophagy.py.",
+    "note2": "The scope is intentionally the WHOLE autophagy literature across all journals and labs, not only autophagy-dedicated groups. Themes are facets used to slice that literature toward Prof. Manjithaya's interests.",
+    "requests": 101
+  },
+  "researcher": {
+    "name": "Prof. Ravi Manjithaya",
+    "lab": "Autophagy Lab",
+    "affiliation": "Molecular Biology & Genetics Unit / Neuroscience Unit, JNCASR, Bengaluru",
+    "scholar": "https://scholar.google.com/citations?user=ppO8_scAAAAJ&hl=en",
+    "blurb": "Mechanisms of autophagy and selective autophagy in health and disease — across yeast, Drosophila, mouse and mammalian cells — spanning neurodegeneration, intracellular infection, cancer, unconventional protein secretion, and small-molecule autophagy modulators."
+  },
+  "baseQuery": "(\"autophagy\"[tiab] OR \"autophagic\"[tiab] OR \"autophagosome\"[tiab] OR \"autophagosomes\"[tiab] OR \"macroautophagy\"[tiab] OR \"mitophagy\"[tiab] OR \"aggrephagy\"[tiab] OR \"pexophagy\"[tiab] OR \"xenophagy\"[tiab] OR \"lysosomal degradation\"[tiab] OR \"LC3\"[tiab] OR \"ATG8\"[tiab])",
+  "prestigeJournals": [
+    "Nature",
+    "Science",
+    "Cell",
+    "Cell Metabolism",
+    "Molecular Cell",
+    "Nature Cell Biology",
+    "Nature Metabolism",
+    "Nature Communications",
+    "Nature Reviews Molecular Cell Biology",
+    "Nature Aging",
+    "Nature Neuroscience",
+    "Developmental Cell",
+    "Journal of Cell Biology",
+    "The EMBO Journal",
+    "EMBO Reports",
+    "Autophagy",
+    "Cell Reports",
+    "Science Advances",
+    "Proceedings of the National Academy of Sciences",
+    "Neuron",
+    "eLife",
+    "Cell Death and Differentiation",
+    "Cell Research",
+    "Immunity",
+    "The Journal of Clinical Investigation",
+    "Science Signaling",
+    "Molecular Neurodegeneration"
+  ],
+  "themes": [
+    {
+      "id": "mitophagy",
+      "label": "Mitophagy",
+      "group": "Selective autophagy",
+      "query": "(\"mitophagy\"[tiab] OR \"mitophagic\"[tiab] OR (\"PINK1\"[tiab] AND \"Parkin\"[tiab]))",
+      "signature": true,
+      "technique": "mitophagy flux assays",
+      "youText": "You've dissected mitophagy in neurodegeneration",
+      "connector": "these groups have new mitophagy work"
+    },
+    {
+      "id": "aggrephagy",
+      "label": "Aggrephagy & synucleinopathy",
+      "group": "Selective autophagy",
+      "query": "(\"aggrephagy\"[tiab] OR ((\"alpha-synuclein\"[tiab] OR \"α-synuclein\"[tiab] OR \"synuclein\"[tiab] OR \"protein aggregate\"[tiab] OR \"protein aggregates\"[tiab] OR \"aggresome\"[tiab]) AND (\"autophagy\"[tiab] OR \"autophagic\"[tiab] OR \"clearance\"[tiab])))",
+      "signature": true,
+      "technique": "aggregate-clearance / synucleinopathy models",
+      "youText": "You've studied autophagic clearance of α-synuclein aggregates",
+      "connector": "these groups are clearing aggregates too"
+    },
+    {
+      "id": "pexophagy",
+      "label": "Pexophagy",
+      "group": "Selective autophagy",
+      "query": "(\"pexophagy\"[tiab] OR (\"peroxisome\"[tiab] AND (\"autophagy\"[tiab] OR \"autophagic\"[tiab] OR \"degradation\"[tiab])))",
+      "signature": true,
+      "technique": "pexophagy in Pichia pastoris",
+      "youText": "Your early work defined pexophagy in Pichia",
+      "connector": "these groups touched peroxisome turnover"
+    },
+    {
+      "id": "xenophagy",
+      "label": "Xenophagy & infection",
+      "group": "Selective autophagy",
+      "query": "(\"xenophagy\"[tiab] OR ((\"Salmonella\"[tiab] OR \"Mycobacterium\"[tiab] OR \"Acinetobacter\"[tiab] OR \"intracellular bacteria\"[tiab] OR \"intracellular pathogen\"[tiab] OR \"Plasmodium\"[tiab]) AND (\"autophagy\"[tiab] OR \"autophagic\"[tiab] OR \"LC3\"[tiab])))",
+      "signature": true,
+      "technique": "host-pathogen autophagy (xenophagy)",
+      "youText": "You've probed how autophagy handles intracellular pathogens",
+      "connector": "these groups are working on autophagy in infection"
+    },
+    {
+      "id": "erphagy",
+      "label": "ER-phagy & other selective autophagy",
+      "group": "Selective autophagy",
+      "query": "(\"ER-phagy\"[tiab] OR \"reticulophagy\"[tiab] OR \"lipophagy\"[tiab] OR \"ribophagy\"[tiab] OR \"nucleophagy\"[tiab] OR \"ferritinophagy\"[tiab])",
+      "signature": false,
+      "technique": "selective autophagy receptors",
+      "youText": "You work across selective autophagy pathways",
+      "connector": "these groups report new selective-autophagy routes"
+    },
+    {
+      "id": "secretory",
+      "label": "Secretory & unconventional protein secretion",
+      "group": "Mechanism",
+      "query": "(\"unconventional protein secretion\"[tiab] OR \"unconventional secretion\"[tiab] OR \"secretory autophagy\"[tiab] OR (\"autophagy\"[tiab] AND \"secretion\"[tiab] AND \"Golgi\"[tiab]))",
+      "signature": true,
+      "technique": "autophagosome biogenesis in unconventional secretion",
+      "youText": "You connected autophagosome biogenesis to unconventional secretion",
+      "connector": "these groups are working on secretory autophagy"
+    },
+    {
+      "id": "machinery",
+      "label": "Core machinery & regulation",
+      "group": "Mechanism",
+      "query": "((\"ATG\"[tiab] OR \"ULK1\"[tiab] OR \"Beclin\"[tiab] OR \"WIPI2\"[tiab] OR \"phagophore\"[tiab] OR \"autophagosome biogenesis\"[tiab] OR \"mTOR\"[tiab] OR \"mTORC1\"[tiab] OR \"AMPK\"[tiab] OR \"TFEB\"[tiab]) AND (\"autophagy\"[tiab] OR \"autophagic\"[tiab]))",
+      "signature": false,
+      "technique": "autophagy machinery & flux",
+      "youText": "Your mechanistic work maps the autophagy machinery",
+      "connector": "these groups report new machinery/regulation"
+    },
+    {
+      "id": "neurodegeneration",
+      "label": "Neurodegeneration",
+      "group": "Disease",
+      "query": "((\"Parkinson\"[tiab] OR \"Alzheimer\"[tiab] OR \"neurodegeneration\"[tiab] OR \"neurodegenerative\"[tiab] OR \"tau\"[tiab] OR \"TDP-43\"[tiab] OR \"Huntington\"[tiab] OR \"ALS\"[tiab] OR \"amyotrophic lateral sclerosis\"[tiab]) AND (\"autophagy\"[tiab] OR \"autophagic\"[tiab] OR \"mitophagy\"[tiab] OR \"lysosom\"[tiab]))",
+      "signature": true,
+      "technique": "neurodegeneration disease models",
+      "youText": "You model autophagy failure in neurodegeneration",
+      "connector": "these groups link autophagy to neurodegeneration"
+    },
+    {
+      "id": "cancer",
+      "label": "Autophagy in cancer",
+      "group": "Disease",
+      "query": "((\"cancer\"[tiab] OR \"tumor\"[tiab] OR \"tumour\"[tiab] OR \"pancreatic\"[tiab] OR \"oncogen\"[tiab]) AND (\"autophagy\"[tiab] OR \"autophagic\"[tiab] OR \"mitophagy\"[tiab]))",
+      "signature": true,
+      "technique": "autophagy in pancreatic cancer",
+      "youText": "You've explored autophagy in cancer, including pancreatic",
+      "connector": "these groups tie autophagy to tumor biology"
+    },
+    {
+      "id": "modulators",
+      "label": "Small-molecule autophagy modulators",
+      "group": "Therapeutics",
+      "query": "((\"autophagy\"[tiab] OR \"autophagic\"[tiab] OR \"mitophagy\"[tiab]) AND (\"small molecule\"[tiab] OR \"small-molecule\"[tiab] OR \"autophagy inducer\"[tiab] OR \"autophagy inhibitor\"[tiab] OR \"autophagy modulator\"[tiab] OR \"high-content screen\"[tiab] OR \"high content screening\"[tiab] OR \"drug discovery\"[tiab] OR \"chemical screen\"[tiab]))",
+      "signature": true,
+      "technique": "small-molecule screening / autophagy modulators",
+      "youText": "You discover small-molecule autophagy modulators (CDRI-recognised)",
+      "connector": "these groups report new autophagy-modulating compounds"
+    }
+  ],
+  "models": [
+    {
+      "id": "yeast",
+      "label": "Yeast",
+      "query": "(\"yeast\"[tiab] OR \"Saccharomyces\"[tiab] OR \"Pichia\"[tiab] OR \"Komagataella\"[tiab])"
+    },
+    {
+      "id": "drosophila",
+      "label": "Drosophila",
+      "query": "(\"Drosophila\"[tiab] OR \"fruit fly\"[tiab])"
+    },
+    {
+      "id": "mouse",
+      "label": "Mouse",
+      "query": "(\"mouse\"[tiab] OR \"mice\"[tiab] OR \"murine\"[tiab])"
+    },
+    {
+      "id": "mammalian",
+      "label": "Mammalian cells",
+      "query": "(\"HeLa\"[tiab] OR \"HEK293\"[tiab] OR \"mammalian cells\"[tiab] OR \"cell line\"[tiab])"
+    }
+  ],
+  "examples": [
+    "New mitophagy papers in the last month",
+    "Autophagy and α-synuclein clearance this quarter",
+    "Small-molecule autophagy inducers this year",
+    "Autophagy in Salmonella or Mycobacterium infection",
+    "Unconventional protein secretion and the Golgi"
+  ],
+  "years": [
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "trend": {
+    "mitophagy": {
+      "2018": 763,
+      "2019": 916,
+      "2020": 1133,
+      "2021": 1431,
+      "2022": 1638,
+      "2023": 1670,
+      "2024": 1973,
+      "2025": 2597,
+      "2026": 2258
+    },
+    "aggrephagy": {
+      "2018": 261,
+      "2019": 276,
+      "2020": 298,
+      "2021": 317,
+      "2022": 320,
+      "2023": 290,
+      "2024": 275,
+      "2025": 350,
+      "2026": 282
+    },
+    "pexophagy": {
+      "2018": 88,
+      "2019": 101,
+      "2020": 124,
+      "2021": 112,
+      "2022": 114,
+      "2023": 124,
+      "2024": 98,
+      "2025": 130,
+      "2026": 97
+    },
+    "xenophagy": {
+      "2018": 133,
+      "2019": 140,
+      "2020": 183,
+      "2021": 162,
+      "2022": 163,
+      "2023": 149,
+      "2024": 146,
+      "2025": 212,
+      "2026": 122
+    },
+    "erphagy": {
+      "2018": 91,
+      "2019": 138,
+      "2020": 144,
+      "2021": 168,
+      "2022": 200,
+      "2023": 231,
+      "2024": 293,
+      "2025": 351,
+      "2026": 280
+    },
+    "secretory": {
+      "2018": 31,
+      "2019": 27,
+      "2020": 36,
+      "2021": 38,
+      "2022": 45,
+      "2023": 47,
+      "2024": 49,
+      "2025": 55,
+      "2026": 43
+    },
+    "machinery": {
+      "2018": 2089,
+      "2019": 2430,
+      "2020": 2748,
+      "2021": 2870,
+      "2022": 2650,
+      "2023": 2562,
+      "2024": 2598,
+      "2025": 2828,
+      "2026": 2047
+    },
+    "neurodegeneration": {
+      "2018": 924,
+      "2019": 1054,
+      "2020": 1254,
+      "2021": 1416,
+      "2022": 1341,
+      "2023": 1329,
+      "2024": 1387,
+      "2025": 1653,
+      "2026": 1305
+    },
+    "cancer": {
+      "2018": 2224,
+      "2019": 2567,
+      "2020": 3018,
+      "2021": 3425,
+      "2022": 3307,
+      "2023": 3066,
+      "2024": 3222,
+      "2025": 3661,
+      "2026": 2399
+    },
+    "modulators": {
+      "2018": 517,
+      "2019": 629,
+      "2020": 640,
+      "2021": 737,
+      "2022": 736,
+      "2023": 689,
+      "2024": 672,
+      "2025": 752,
+      "2026": 504
+    }
+  },
+  "snapshot": {
+    "windowDays": 30,
+    "asOf": "2026-08-19",
+    "byTheme": {
+      "mitophagy": 272,
+      "aggrephagy": 29,
+      "pexophagy": 17,
+      "xenophagy": 15,
+      "erphagy": 28,
+      "secretory": 4,
+      "machinery": 206,
+      "neurodegeneration": 130,
+      "cancer": 251,
+      "modulators": 52
+    },
+    "total": 1043
+  }
+}

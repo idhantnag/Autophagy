@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autophagy Radar · Prof. Ravi Manjithaya</title>
+  <meta name="description"
+    content="A personal literature radar for autophagy — spoken and written briefings on new papers relevant to Prof. Ravi Manjithaya's work, with the standout papers and their PubMed IDs. Data live from PubMed." />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <div class="bg-wash" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.35"/>
+          <circle cx="24" cy="24" r="13" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.55"/>
+          <circle cx="24" cy="24" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M24 24 L38 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="33" cy="17" r="2.4" fill="currentColor"/>
+          <circle cx="15" cy="30" r="1.8" fill="currentColor" opacity="0.7"/>
+          <circle cx="30" cy="33" r="1.6" fill="currentColor" opacity="0.7"/>
+        </svg>
+        <div>
+          <h1>Autophagy Radar</h1>
+          <p class="tagline">Your spoken &amp; written briefing on new autophagy literature</p>
+        </div>
+      </div>
+      <div class="header-meta">
+        <button id="keyBtn" class="icon-btn" title="Assistant settings (optional API key)" aria-label="Assistant settings">⚙</button>
+        <button id="themeToggle" class="icon-btn" title="Toggle light / dark" aria-label="Toggle theme">◐</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" id="app" aria-busy="true">
+
+    <!-- Optional API key panel -->
+    <section id="keyPanel" class="card key-panel" hidden>
+      <h2 class="panel-h">Assistant voice — optional upgrade</h2>
+      <p class="fine-print" style="margin-top:0">
+        Autophagy Radar works fully <strong>without any key</strong>: it always writes and reads your briefing
+        from live PubMed data. Add an Anthropic API key to have <strong>Claude</strong> write a warmer, more
+        connected narrative that ties new papers back to your own techniques. It is a
+        <strong>bring-your-own-key</strong> feature — the key is stored only in your browser and sent directly to
+        Anthropic. Get one at <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a>.
+      </p>
+      <div class="key-row">
+        <input id="apiKey" type="password" placeholder="sk-ant-…  (optional)" autocomplete="off" spellcheck="false" />
+        <select id="apiModel" title="Model">
+          <option value="claude-opus-5">Opus 5 · most capable</option>
+          <option value="claude-sonnet-5">Sonnet 5 · balanced</option>
+          <option value="claude-haiku-4-5">Haiku 4.5 · fastest</option>
+        </select>
+        <button id="apiSave" class="btn-primary">Save</button>
+        <button id="apiClear" class="btn-ghost">Clear</button>
+      </div>
+      <p class="fine-print" id="apiStatus"></p>
+    </section>
+
+    <!-- Briefing control -->
+    <section class="card brief-card">
+      <div class="brief-head">
+        <h2>Brief me on the last…</h2>
+        <p class="sub">Pick a window. I'll scan every autophagy paper PubMed added in that time — across all journals and labs — and give you a spoken + written summary tuned to your work.</p>
+      </div>
+
+      <div class="window-row" id="windowPresets" role="group" aria-label="Time window">
+        <button class="win-btn" data-days="7">7 days</button>
+        <button class="win-btn active" data-days="30">30 days</button>
+        <button class="win-btn" data-days="90">90 days</button>
+        <button class="win-btn" data-days="180">6 months</button>
+        <button class="win-btn" data-days="365">1 year</button>
+        <button class="win-btn" data-custom="1">Custom…</button>
+      </div>
+
+      <div class="custom-row" id="customRow" hidden>
+        <label>From <input type="date" id="dateFrom" /></label>
+        <label>To <input type="date" id="dateTo" /></label>
+        <label class="basis">Basis
+          <select id="dateBasis" title="Which date to use">
+            <option value="edat">Added to PubMed</option>
+            <option value="pdat">Published</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="brief-actions">
+        <button id="briefPlay" class="btn-primary big">▶ Play my briefing</button>
+        <button id="briefRead" class="btn-ghost big">Read only</button>
+        <span class="scope-note" id="scopeNote"></span>
+      </div>
+    </section>
+
+    <!-- Summary output -->
+    <section class="card summary-card" id="summaryCard" hidden>
+      <div class="summary-head">
+        <h2 id="summaryTitle">Your briefing</h2>
+        <div class="audio-controls" id="audioControls">
+          <button id="playBtn" class="audio-btn" title="Play / pause">▶</button>
+          <button id="stopBtn" class="audio-btn" title="Stop">■</button>
+          <label class="rate">Speed
+            <input type="range" id="rate" min="0.7" max="1.4" step="0.1" value="1" />
+          </label>
+          <select id="voiceSel" title="Voice" class="voice-sel"></select>
+        </div>
+      </div>
+      <div id="summaryStatus" class="paper-status"></div>
+      <div id="summaryBody" class="summary-body"></div>
+      <p class="engine-note" id="engineNote" hidden></p>
+    </section>
+
+    <!-- Highlighted / groundbreaking papers -->
+    <section class="card" id="highlightCard" hidden>
+      <div class="card-head">
+        <h2>Worth a proper read ★</h2>
+        <p class="sub">Standouts from this window — the field's highest-profile venues first (marked in colour) — each with its PubMed ID for one-click access.</p>
+      </div>
+      <div id="highlightList" class="highlight-list"></div>
+    </section>
+
+    <!-- Proactive radar cards -->
+    <section class="card" id="radarCard">
+      <div class="card-head">
+        <h2>On your radar</h2>
+        <p class="sub">Because of what you work on, these threads are worth a look. Numbers are new papers PubMed added in the last 30 days.</p>
+      </div>
+      <div id="radarGrid" class="radar-grid"></div>
+    </section>
+
+    <!-- Trend chart -->
+    <section class="card chart-card" id="trendCardWrap">
+      <div class="card-head">
+        <h2>The long view</h2>
+        <p class="sub">Your themes across the autophagy literature over the past several years — where attention is heading.</p>
+      </div>
+      <div class="chart-box tall"><canvas id="trendChart"></canvas></div>
+    </section>
+
+    <!-- Live browse -->
+    <section class="card" id="browseCard">
+      <div class="card-head">
+        <h2>Browse the papers</h2>
+        <p class="sub">Live from PubMed. Filter by one of your themes and time window; open any paper or email its corresponding author about that work.</p>
+      </div>
+      <div class="browse-row">
+        <label>Theme
+          <select id="browseTheme"><option value="">All autophagy</option></select>
+        </label>
+        <label>Sort
+          <select id="browseSort">
+            <option value="date">Most recent</option>
+            <option value="relevance">Best match</option>
+          </select>
+        </label>
+        <button id="browseGo" class="btn-primary">Find papers</button>
+      </div>
+      <div id="browseStatus" class="paper-status"></div>
+      <div id="browseResults" class="paper-results"></div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        Live data: <a href="https://www.ncbi.nlm.nih.gov/home/develop/api/" target="_blank" rel="noopener">PubMed / NCBI E-utilities</a>.
+        Every paper and summary here is fetched from PubMed at the moment you ask — never model-invented.
+        Voice uses your browser's built-in speech synthesis. Refresh the trend cache with
+        <code>python3 scripts/fetch_autophagy.py</code>.
+      </p>
+      <p class="muted">Built for Prof. Ravi Manjithaya's group. Not affiliated with NCBI. Correspondence emails are shown per paper, exactly as authors published them.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
