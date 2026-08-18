@@ -391,13 +391,20 @@
     voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
     const sel = $("#voiceSel");
     if (!sel) return;
-    const preferred = voices.filter((v) => /en(-|_)?(GB|IN|US|AU)?/i.test(v.lang) || v.lang.startsWith("en"));
-    const list = preferred.length ? preferred : voices;
-    sel.innerHTML = list.map((v, i) => `<option value="${voices.indexOf(v)}">${esc(v.name)} · ${esc(v.lang)}</option>`).join("");
-    // Prefer an Indian English voice, then British, for this researcher.
-    let pick = list.findIndex((v) => /(-|_)IN$/i.test(v.lang));
-    if (pick < 0) pick = list.findIndex((v) => /(-|_)GB$/i.test(v.lang));
-    if (pick >= 0) sel.value = String(voices.indexOf(list[pick]));
+    // Only offer Google voices (e.g. "Google US English"). These ship with
+    // Chrome/Chromium; other browsers may expose none.
+    const google = voices.filter((v) => /google/i.test(v.name));
+    if (!google.length) {
+      sel.innerHTML = `<option value="">Google voices unavailable — using browser default</option>`;
+      return;
+    }
+    const isEn = (v) => /^en(-|_|$)/i.test(v.lang);
+    const list = [...google.filter(isEn), ...google.filter((v) => !isEn(v))];
+    sel.innerHTML = list.map((v) => `<option value="${voices.indexOf(v)}">${esc(v.name)} · ${esc(v.lang)}</option>`).join("");
+    // Prefer an Indian-English Google voice, then British, else first English.
+    const pick = list.find((v) => /^en(-|_)IN$/i.test(v.lang))
+      || list.find((v) => /^en(-|_)GB$/i.test(v.lang)) || list[0];
+    if (pick) sel.value = String(voices.indexOf(pick));
   }
   function speak(text) {
     if (!window.speechSynthesis) {
@@ -407,8 +414,8 @@
     }
     stopSpeech();
     const u = new SpeechSynthesisUtterance(text);
-    const vi = Number($("#voiceSel").value);
-    if (voices[vi]) u.voice = voices[vi];
+    const raw = $("#voiceSel").value;
+    if (raw !== "" && voices[Number(raw)]) u.voice = voices[Number(raw)];
     u.rate = Number($("#rate").value) || 1;
     u.onend = () => { $("#playBtn").textContent = "▶"; };
     window.speechSynthesis.speak(u);
